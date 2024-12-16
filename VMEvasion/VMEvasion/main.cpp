@@ -14,9 +14,12 @@
 
 int main(void) {
     std::tuple<IWbemServices*, IWbemLocator*> wql = init_wql();
-    if (check_registry() || check_registry_keys() || check_fs_artifacts() 
-        || check_running_procs() || check_vm_vendor() || has_hypervisor() 
-        || query_msvm(std::get<0>(wql), std::get<1>(wql))) {
+
+    bool result = check_registry() | check_registry_keys() | check_fs_artifacts()
+        | check_running_procs() | check_vm_vendor() | has_hypervisor()
+        | query_msvm(std::get<0>(wql), std::get<1>(wql));
+
+    if (result) {
         std::cout << "Running in a VM :(" << std::endl;
         return 1;
     }
@@ -160,7 +163,7 @@ bool has_hypervisor() {
 
     // For some reason, on bare-metal, it returns Microsoft Hyper-V
     if (vendorStr == "Microsoft Hv") {
-        std::cout << "MAYBE! ON Microsoft Hyper-V" << std::endl;
+        std::cout << "(MAYBE!) ON Microsoft Hyper-V" << std::endl;
         return false;
     }
 
@@ -209,8 +212,6 @@ std::tuple<IWbemServices*, IWbemLocator*> init_wql() {
         0,
         &pSvc
     ), "Could not connect to WMI namespace.");
-
-    std::cout << "Connected to ROOT\\CIMV2 WMI namespace" << std::endl;
 
     check_hresult(CoSetProxyBlanket(
         pSvc,
@@ -268,19 +269,19 @@ bool query_msvm(IWbemServices* pSvc, IWbemLocator* pLoc) {
         VariantInit(&vtProp);
         hr = pclsObj->Get(L"Name", 0, &vtProp, 0, 0);
         if (vtProp.vt != VT_NULL) {
-            std::wcout << " VM GUID : " << vtProp.bstrVal << std::endl;
+            std::wcout << "(WMI Msvm_SummaryInformation QUERY) VM GUID: " << vtProp.bstrVal << std::endl;
             result = true;
         }
         VariantClear(&vtProp);
         hr = pclsObj->Get(L"ElementName", 0, &vtProp, 0, 0);
         if (vtProp.vt != VT_NULL) {
-            std::wcout << " VM Name : " << vtProp.bstrVal << std::endl;
+            std::wcout << "(WMI Msvm_SummaryInformation QUERY) VM Name: " << vtProp.bstrVal << std::endl;
             result = true;
         }
         VariantClear(&vtProp);
         hr = pclsObj->Get(L"EnabledState", 0, &vtProp, 0, 0);
         if (vtProp.vt != VT_NULL) {
-            std::wcout << " EnabledState : " << vtProp.ulVal << std::endl;
+            std::wcout << "(WMI Msvm_SummaryInformation QUERY) EnabledState: " << vtProp.ulVal << std::endl;
             result = true;
         }
         VariantClear(&vtProp);
