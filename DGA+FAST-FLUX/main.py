@@ -103,7 +103,7 @@ if __name__ == "__main__":
         logging.info("Shutting down...")
         dns_server.stop()
         stop_event.set()
-        dga_thr.join(timeout=30)
+        dga_thr.join(timeout=5)
 
         if dga_thr.is_alive():
             logging.error("DGA thread did not stop in time, forcing exit.")
