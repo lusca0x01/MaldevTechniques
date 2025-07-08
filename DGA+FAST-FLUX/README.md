@@ -1,4 +1,4 @@
-# DNS Fast-Flux+DGA Server
+# DNS DGA+Fast-Flux Server
 
 This project implements a custom DNS server using Python that:
 
