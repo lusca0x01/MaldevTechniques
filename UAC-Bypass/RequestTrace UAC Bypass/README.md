@@ -19,6 +19,10 @@ This is a modernized C++ implementation based on the original work by **R41N3RZU
 
 This is a User Account Control (UAC) bypass technique that exploits the Windows RequestTrace scheduled task to execute arbitrary DLLs with elevated privileges without triggering a UAC prompt. The technique leverages directory junctions, environment variable manipulation, and a scheduled task triggered by a specific key combination.
 
+## Demo
+
+https://github.com/user-attachments/assets/d513725a-5742-420f-98ea-5fc89ed98f2a
+
 ## Technical Background
 
 ### The RequestTrace Task
