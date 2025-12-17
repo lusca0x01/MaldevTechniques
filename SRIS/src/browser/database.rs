@@ -65,7 +65,7 @@ impl DatabaseExtractor<PasswordEntry> for PasswordExtractor {
         Ok(PasswordEntry {
             url: row.get(0)?,
             username: row.get(1)?,
-            password: String::new(), // Será preenchido depois da descriptografia
+            password: String::new(), // Placeholder, will be decrypted later
             encrypted_password: row.get(2)?,
             browser: String::new(),
         })

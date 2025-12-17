@@ -70,7 +70,7 @@ fn decrypt_aes_gcm(encrypted_data: &[u8], master_key: &[u8]) -> Option<String> {
         .decrypt(nonce, payload)
         .ok()
         .and_then(|mut decrypted| {
-            // Remove o tag de 16 bytes do final
+            // Remove the last 16 bytes (tag) if present
             if decrypted.len() >= 16 {
                 decrypted.truncate(decrypted.len() - 16);
             }
