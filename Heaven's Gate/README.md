@@ -76,6 +76,30 @@ The Heaven's Gate technique is historically significant in malware development b
 - **AV/EDR Evasion**: Some security tools don't properly handle WoW64 transitions
 - **API Hooking Bypass**: Can call 64-bit ntdll directly, bypassing 32-bit hooks
 
+## Analysis: 32-bit → 64-bit Heaven’s Gate Transition
+
+The screenshot below shows Ghidra’s static analysis of the Heaven’s Gate transition used in this binary:
+<img width="635" height="93" alt="image" src="https://github.com/user-attachments/assets/d196266e-dbdb-4112-91e5-d0cde9bc15bd" />
+
+The disassembly clearly reveals the classic Heaven’s Gate sequence:
+
+```asm
+push 0x33
+```
+Pushes the 64-bit code segment selector (CS = 0x33) used by WoW64 for long mode execution.
+
+```asm
+push <64-bit_entry>
+```
+Pushes the target instruction pointer that will be executed in 64-bit mode.
+
+```asm
+retf
+```
+Performs a far return, loading both CS and RIP from the stack, transferring execution from 32-bit compatibility mode to 64-bit long mode.
+
+This confirms that the binary explicitly transitions into true 64-bit execution from a 32-bit WoW64 process.
+
 ## References and Credits
 
 ### 1. Desafios de Engenharia Reversa (hackingnaweb)
