@@ -1,0 +1,22 @@
+# SimpleC2 specific ignores
+# (Parent .gitignore handles VS, Python cache, etc.)
+
+# Python virtual environment
+env/
+venv/
+.venv/
+
+# Database
+*.db
+*.sqlite3
+
+# Generated payloads
+payload_builds/*
+!payload_builds/README.md
+
+# Files for agent download (sensitive)
+payloads/*
+!payloads/README.md
+
+# macOS
+.DS_Store
